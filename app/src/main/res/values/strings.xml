@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">QR Generator</string>
+    <string name="input_hint">Type any text or paste a link</string>
+    <string name="placeholder">Your QR code will appear here</string>
+    <string name="qr_description">Generated QR code</string>
+    <string name="action_share">Share</string>
+    <string name="action_save">Save</string>
+    <string name="action_clear">Clear</string>
+    <string name="char_counter">%1$d characters</string>
+    <string name="error_too_long">Text is too long for a QR code</string>
+    <string name="saved_to_gallery">Saved to Pictures/QRGenerator</string>
+    <string name="save_failed">Could not save the image</string>
+    <string name="share_failed">Could not share the image</string>
+    <string name="share_title">Share QR code</string>
+</resources>
