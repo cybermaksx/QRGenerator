@@ -29,18 +29,20 @@ data class Field(@StringRes val label: Int, val value: String)
 data class PrimaryAction(
     @StringRes val label: Int,
     val intent: Intent? = null,
-    val copyText: String? = null
+    val copyText: String? = null,
+    /** Ask "open anyway?" first, used for links that look like phishing. */
+    val confirm: Boolean = false
 )
 
 /**
  * Human readable description of a QR payload.
  *
- * @property linkWarnings null for non-links; empty list for links without issues.
+ * @property linkReports phishing analysis for every link found in the content.
  */
 data class DescribedContent(
     @StringRes val type: Int,
     val fields: List<Field>,
-    val linkWarnings: List<String>?,
+    val linkReports: List<PhishingReport>,
     val action: PrimaryAction?
 )
 
@@ -54,7 +56,7 @@ object ContentDescriber {
     fun describe(context: Context, raw: String): DescribedContent {
         val parsed = ResultParser.parseResult(Result(raw, null, null, BarcodeFormat.QR_CODE))
         return when (parsed) {
-            is URIParsedResult -> describeLink(context, parsed)
+            is URIParsedResult -> describeLink(raw)
             is WifiParsedResult -> describeWifi(context, parsed)
             is AddressBookParsedResult -> describeContact(parsed)
             is TelParsedResult -> describePhone(parsed)
@@ -66,24 +68,29 @@ object ContentDescriber {
         }
     }
 
-    private fun describeLink(context: Context, r: URIParsedResult): DescribedContent {
-        val link = r.uri
+    private fun describeLink(raw: String): DescribedContent {
+        // Analyze the original text, not ZXing's cleaned up URI, so no trick is hidden.
+        val link = raw.trim()
+        val report = PhishingAnalyzer.analyze(link)
         val fields = mutableListOf(Field(R.string.field_address, link))
 
-        Uri.parse(link).host?.let { host ->
-            val ascii = UrlInspector.asciiHost(host)
-            fields += Field(R.string.field_domain, ascii)
-            val unicode = UrlInspector.unicodeHost(ascii)
-            if (unicode != ascii) fields += Field(R.string.field_domain_unicode, unicode)
+        if (report.asciiHost.isNotEmpty()) {
+            fields += Field(R.string.field_domain, report.asciiHost)
+            if (report.host != report.asciiHost) fields += Field(R.string.field_domain_unicode, report.host)
         }
 
-        // Only plain web links get an "Open" button; other schemes can trigger app actions.
-        val action = if (UrlInspector.isWebLink(link)) {
-            PrimaryAction(R.string.action_open_link, Intent(Intent.ACTION_VIEW, Uri.parse(link)))
+        // Only web links get an "Open" button; other schemes can trigger app actions.
+        val action = if (report.isWeb && report.host.isNotEmpty()) {
+            val target = if (report.scheme == null) "https://$link" else link
+            PrimaryAction(
+                R.string.action_open_link,
+                Intent(Intent.ACTION_VIEW, Uri.parse(target)),
+                confirm = (report.risk ?: Severity.LOW) >= Severity.MEDIUM
+            )
         } else {
             null
         }
-        return DescribedContent(R.string.type_link, fields, UrlInspector.inspect(context, link), action)
+        return DescribedContent(R.string.type_link, fields, listOf(report), action)
     }
 
     private fun describeWifi(context: Context, r: WifiParsedResult): DescribedContent {
@@ -103,7 +110,7 @@ object ContentDescriber {
         } else {
             null
         }
-        return DescribedContent(R.string.type_wifi, fields, null, action)
+        return DescribedContent(R.string.type_wifi, fields, emptyList(), action)
     }
 
     private fun describeContact(r: AddressBookParsedResult): DescribedContent {
@@ -122,8 +129,9 @@ object ContentDescriber {
             r.emails?.firstOrNull()?.let { putExtra(ContactsContract.Intents.Insert.EMAIL, it) }
             r.org?.let { putExtra(ContactsContract.Intents.Insert.COMPANY, it) }
         }
+        val reports = r.getURLs()?.map { PhishingAnalyzer.analyze(it) }.orEmpty()
         return DescribedContent(
-            R.string.type_contact, fields, null,
+            R.string.type_contact, fields, reports,
             PrimaryAction(R.string.action_add_contact, intent)
         )
     }
@@ -134,7 +142,7 @@ object ContentDescriber {
         return DescribedContent(
             R.string.type_phone,
             listOf(Field(R.string.field_number, r.number)),
-            null,
+            emptyList(),
             PrimaryAction(R.string.action_call, intent)
         )
     }
@@ -149,7 +157,7 @@ object ContentDescriber {
             Uri.fromParts("smsto", numbers.joinToString(","), null)
         ).putExtra("sms_body", r.body.orEmpty())
         return DescribedContent(
-            R.string.type_sms, fields, null,
+            R.string.type_sms, fields, emptyList(),
             PrimaryAction(R.string.action_send_sms, intent)
         )
     }
@@ -166,7 +174,7 @@ object ContentDescriber {
             r.body?.let { putExtra(Intent.EXTRA_TEXT, it) }
         }
         return DescribedContent(
-            R.string.type_email, fields, null,
+            R.string.type_email, fields, emptyList(),
             PrimaryAction(R.string.action_send_email, intent)
         )
     }
@@ -181,7 +189,7 @@ object ContentDescriber {
         // The "q" parameter makes most map apps drop a pin at the point.
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:$lat,$lon?q=$lat,$lon"))
         return DescribedContent(
-            R.string.type_geo, fields, null,
+            R.string.type_geo, fields, emptyList(),
             PrimaryAction(R.string.action_open_map, intent)
         )
     }
@@ -206,7 +214,7 @@ object ContentDescriber {
             putExtra(CalendarContract.Events.DESCRIPTION, r.description)
         }
         return DescribedContent(
-            R.string.type_event, fields, null,
+            R.string.type_event, fields, emptyList(),
             PrimaryAction(R.string.action_add_event, intent)
         )
     }
@@ -216,6 +224,8 @@ object ContentDescriber {
         val fields = listOf(
             Field(R.string.field_length, context.getString(R.string.value_chars, raw.length))
         )
-        return DescribedContent(R.string.type_text, fields, null, null)
+        // Links inside plain text are checked too, e.g. "Win a prize: https://...".
+        val reports = PhishingAnalyzer.extractLinks(raw).map { PhishingAnalyzer.analyze(it) }
+        return DescribedContent(R.string.type_text, fields, reports, null)
     }
 }

@@ -20,8 +20,8 @@ android {
         applicationId = "com.example.qrgenerator"
         minSdk = 29
         targetSdk = 35
-        versionCode = 2
-        versionName = "1.1"
+        versionCode = 3
+        versionName = "1.2"
     }
 
     signingConfigs {
@@ -74,4 +74,7 @@ dependencies {
     implementation("androidx.camera:camera-camera2:$cameraxVersion")
     implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
     implementation("androidx.camera:camera-view:$cameraxVersion")
+
+    // JVM unit tests for the phishing analyzer.
+    testImplementation("junit:junit:4.13.2")
 }

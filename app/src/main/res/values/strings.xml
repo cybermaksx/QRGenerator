@@ -29,8 +29,7 @@
     <string name="result_title">QR code content</string>
     <string name="result_raw">Raw content</string>
     <string name="result_details">Details</string>
-    <string name="result_checks">Link check</string>
-    <string name="result_checks_ok">No obvious issues found. Basic checks only: still look at the domain before you open it.</string>
+    <string name="result_checks">Phishing check</string>
     <string name="action_copy">Copy</string>
     <string name="action_open_link">Open link</string>
     <string name="action_call">Call</string>
@@ -84,11 +83,43 @@
     <string name="value_none">None</string>
     <string name="value_chars">%1$d characters</string>
 
-    <!-- Link warnings -->
-    <string name="warn_http">Not encrypted (http). Do not enter passwords on this site.</string>
-    <string name="warn_idn">Domain uses non-Latin or special characters. It may imitate a well-known site: real domain is %1$s</string>
-    <string name="warn_ip">Link points to a raw IP address instead of a domain name.</string>
+
+    <!-- Phishing check: verdicts -->
+    <string name="verdict_high">Dangerous</string>
+    <string name="verdict_medium">Suspicious</string>
+    <string name="verdict_low">Probably fine, but be careful</string>
+    <string name="verdict_none">No signs of phishing found</string>
+    <string name="checks_disclaimer">Offline checks of the address itself. They catch disguise tricks, but cannot prove a site is safe.</string>
+    <string name="real_site">Real site: %1$s</string>
+    <string name="letters_title">Domain letter by letter</string>
+    <string name="letters_ok">All %1$d characters are plain Latin letters (a-z), digits, hyphens or dots.</string>
+    <string name="letters_one_script">All %1$d characters are from one alphabet (%2$s), including the domain zone. No mixing of alphabets.</string>
+    <string name="letters_bad">%1$d of %2$d characters are not what they seem:</string>
+    <string name="letter_looks_like">looks like \"%1$s\"</string>
+    <string name="confirm_open_title">This link looks like phishing</string>
+    <string name="confirm_open_message">Opening it may lead to a fake site. Open anyway?</string>
+    <string name="confirm_open_yes">Open anyway</string>
+
+    <!-- Phishing check: findings -->
+    <string name="warn_unsafe_scheme">Dangerous link type \"%1$s:\". It can run code or open other apps. Do not open it.</string>
+    <string name="warn_unknown_scheme">Unusual link type \"%1$s:\". It opens another app, not a website.</string>
+    <string name="warn_invisible">Contains invisible or text-direction characters. This is a trick to hide the real address.</string>
+    <string name="warn_unparseable">The domain of this link cannot be read. Do not open it.</string>
+    <string name="warn_mixed_scripts">\"%1$s\" mixes alphabets (%2$s). Real sites practically never do this: it is a look-alike trick.</string>
+    <string name="warn_all_lookalikes">Every letter of \"%1$s\" is a non-Latin look-alike. It reads as \"%2$s\" but is a different domain.</string>
+    <string name="warn_imitates_brand">Imitates %1$s using look-alike characters. This is NOT the real site.</string>
+    <string name="warn_typosquat">\"%1$s\" differs from %2$s by one or two letters. Likely a fake (typosquatting).</string>
+    <string name="warn_brand_subdomain">\"%1$s\" is only decoration in front of the real domain. The link opens %2$s.</string>
+    <string name="warn_userinfo">The part before \"@\" (%1$s) is ignored by browsers. The link really opens %2$s.</string>
+    <string name="warn_obfuscated_ip">%1$s is an IP address written in a disguised form.</string>
+    <string name="warn_brand_wrong_domain">Uses the name \"%1$s\", but %2$s is not its official site (official: %3$s).</string>
+    <string name="warn_ip">Points to a raw IP address instead of a domain name.</string>
+    <string name="warn_http">Not encrypted (http). Do not enter passwords or card data there.</string>
     <string name="warn_shortener">Shortened link (%1$s). The real destination is hidden until you open it.</string>
-    <string name="warn_userinfo">Link contains \"@\". Everything before it is not the real site: real host is %1$s</string>
-    <string name="warn_scheme">Unusual link type \"%1$s:\". Be careful opening it.</string>
+    <string name="warn_non_latin">Domain uses non-Latin characters. Check them in the letter-by-letter view.</string>
+    <string name="warn_free_hosting">Hosted on %1$s, a free platform where anyone can create a site.</string>
+    <string name="warn_suspicious_tld">Domain zone .%1$s is cheap and often used for scams.</string>
+    <string name="warn_port">Uses a non-standard port (%1$s).</string>
+    <string name="warn_many_subdomains">Very long address with %1$d levels. Long addresses help hide the real domain.</string>
+    <string name="warn_login_words">Contains words like \"%1$s\". Do not enter passwords unless you are sure the site is real.</string>
 </resources>
