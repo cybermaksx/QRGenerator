@@ -77,6 +77,9 @@ class MainActivity : Activity() {
         shareButton.setOnClickListener { shareQr() }
         saveButton.setOnClickListener { saveQr() }
         clearButton.setOnClickListener { inputText.text.clear() }
+        findViewById<Button>(R.id.scanButton).setOnClickListener {
+            startActivity(Intent(this, ScanActivity::class.java))
+        }
 
         // Text shared from another app (for example a browser link) fills the input.
         if (savedInstanceState == null) handleIncomingIntent(intent)

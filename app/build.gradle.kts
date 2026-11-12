@@ -20,8 +20,8 @@ android {
         applicationId = "com.example.qrgenerator"
         minSdk = 29
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
     }
 
     signingConfigs {
@@ -67,4 +67,11 @@ dependencies {
     implementation("com.google.zxing:core:3.5.3")
     // AndroidX Core: FileProvider and window insets helpers.
     implementation("androidx.core:core-ktx:1.13.1")
+    // Activity Result API for the camera permission and the photo picker.
+    implementation("androidx.activity:activity-ktx:1.9.3")
+    // CameraX: camera preview and frame analysis for the scanner.
+    val cameraxVersion = "1.4.1"
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
 }

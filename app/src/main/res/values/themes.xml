@@ -8,4 +8,9 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
+
+    <!-- Scanner screen is always dark so the camera preview stands out. -->
+    <style name="AppTheme.Scanner" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
 </resources>

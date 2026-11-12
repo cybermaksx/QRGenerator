@@ -12,4 +12,83 @@
     <string name="save_failed">Could not save the image</string>
     <string name="share_failed">Could not share the image</string>
     <string name="share_title">Share QR code</string>
+
+    <!-- Scanner -->
+    <string name="action_scan">Scan</string>
+    <string name="scan_title">Scan QR code</string>
+    <string name="scan_hint">Point the camera at a QR code</string>
+    <string name="scan_from_gallery">From gallery</string>
+    <string name="scan_torch_on">Light on</string>
+    <string name="scan_torch_off">Light off</string>
+    <string name="scan_close">Close</string>
+    <string name="scan_no_permission">Camera access is denied. You can still pick an image from the gallery.</string>
+    <string name="scan_no_camera">Camera is not available on this device</string>
+    <string name="scan_not_found">No QR code found in this image</string>
+
+    <!-- Result screen -->
+    <string name="result_title">QR code content</string>
+    <string name="result_raw">Raw content</string>
+    <string name="result_details">Details</string>
+    <string name="result_checks">Link check</string>
+    <string name="result_checks_ok">No obvious issues found. Basic checks only: still look at the domain before you open it.</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_open_link">Open link</string>
+    <string name="action_call">Call</string>
+    <string name="action_send_sms">Send SMS</string>
+    <string name="action_send_email">Write email</string>
+    <string name="action_open_map">Open map</string>
+    <string name="action_add_contact">Add contact</string>
+    <string name="action_add_event">Add to calendar</string>
+    <string name="action_copy_password">Copy password</string>
+    <string name="action_scan_again">Scan again</string>
+    <string name="copied">Copied</string>
+    <string name="no_app_found">No app can handle this</string>
+
+    <!-- Content types -->
+    <string name="type_link">Link</string>
+    <string name="type_wifi">Wi-Fi network</string>
+    <string name="type_contact">Contact</string>
+    <string name="type_phone">Phone number</string>
+    <string name="type_sms">SMS</string>
+    <string name="type_email">Email</string>
+    <string name="type_geo">Location</string>
+    <string name="type_event">Calendar event</string>
+    <string name="type_text">Text</string>
+
+    <!-- Field labels -->
+    <string name="field_address">Address</string>
+    <string name="field_domain">Domain</string>
+    <string name="field_domain_unicode">Domain as shown</string>
+    <string name="field_network">Network name</string>
+    <string name="field_password">Password</string>
+    <string name="field_security">Security</string>
+    <string name="field_hidden">Hidden network</string>
+    <string name="field_name">Name</string>
+    <string name="field_phone">Phone</string>
+    <string name="field_email">Email</string>
+    <string name="field_company">Company</string>
+    <string name="field_postal">Address</string>
+    <string name="field_website">Website</string>
+    <string name="field_number">Number</string>
+    <string name="field_message">Message</string>
+    <string name="field_to">To</string>
+    <string name="field_subject">Subject</string>
+    <string name="field_latitude">Latitude</string>
+    <string name="field_longitude">Longitude</string>
+    <string name="field_title">Title</string>
+    <string name="field_start">Start</string>
+    <string name="field_end">End</string>
+    <string name="field_location">Location</string>
+    <string name="field_length">Length</string>
+    <string name="value_yes">Yes</string>
+    <string name="value_none">None</string>
+    <string name="value_chars">%1$d characters</string>
+
+    <!-- Link warnings -->
+    <string name="warn_http">Not encrypted (http). Do not enter passwords on this site.</string>
+    <string name="warn_idn">Domain uses non-Latin or special characters. It may imitate a well-known site: real domain is %1$s</string>
+    <string name="warn_ip">Link points to a raw IP address instead of a domain name.</string>
+    <string name="warn_shortener">Shortened link (%1$s). The real destination is hidden until you open it.</string>
+    <string name="warn_userinfo">Link contains \"@\". Everything before it is not the real site: real host is %1$s</string>
+    <string name="warn_scheme">Unusual link type \"%1$s:\". Be careful opening it.</string>
 </resources>

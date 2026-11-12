@@ -5,6 +5,9 @@ Simple Android app that turns any text or link into a QR code.
 ## Features
 
 - Live QR generation while typing (UTF-8, Cyrillic supported)
+- QR scanner (camera, gallery image, or image shared from another app)
+- Shows what a code contains: links, Wi-Fi, contacts, phone, SMS, email, location, events
+- Basic link checks against QR phishing: http, punycode look-alike domains, raw IPs, shorteners, "@" tricks
 - Share the QR image together with the original text
 - Save the QR code as PNG to `Pictures/QRGenerator`
 - Accepts text shared from other apps (for example a link from a browser)
@@ -36,4 +39,4 @@ Without that file the release build is signed with the debug key.
 
 ## Stack
 
-Kotlin, Android Views, [ZXing core](https://github.com/zxing/zxing) for encoding.
+Kotlin, Android Views, CameraX, [ZXing core](https://github.com/zxing/zxing) for encoding and decoding.
